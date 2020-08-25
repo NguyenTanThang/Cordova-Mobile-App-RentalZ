@@ -1,0 +1,299 @@
+body {
+    padding-bottom: 120px;
+}
+
+.padding-for-top {
+    padding-top: 50px;
+}
+
+body.blurred {
+    overflow-y: hidden;
+}
+
+body.blurred::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 9;
+}
+
+.section-padding {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.section-header {
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    font-size: 2rem;
+}
+
+/*Top*/
+.top {
+    padding: 20px;
+    background-color: #EB6864;
+    color: #FFF;
+    text-align: center;
+}
+
+/*Menu*/
+.menu {
+    position: fixed;
+    top: 0;
+    right: -1200px;
+    width: 90%;
+    height: 100%;
+    background-color: #fff;
+    border-left: 1px solid #000;
+    transition: all 0.5s ease;
+    z-index: 9999;
+}
+
+.menu.active {
+    right: 0;
+}
+
+.menu-close {
+    font-weight: bold;
+    color: #FFF;
+    font-size: 2rem;
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.menu .menu-header {
+    padding: 10px;
+    background-color: #EB6864;
+}
+
+.menu .menu-header h2 {
+    color: #FFF;
+}
+
+.menu .menu-content ul li {
+    border-bottom: 1px solid #000;
+}
+
+.menu .menu-content ul li a {
+    display: inline-block;
+    padding: 20px;
+    width: 100%;
+    font-size: 1.5rem;
+}
+
+.menu .menu-content ul li a:active {
+    color: #FFF;
+    background-color: rgba(235, 104, 100, 0.5);
+}
+
+.menu .menu-content ul li a img {
+    width: 3rem;
+    margin-right: 20px;
+}
+
+/*Nav*/
+nav {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    border-top: 1px solid #000;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin: 0;
+    padding: 0;
+    z-index: 8;
+}
+
+nav ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    width: 33.33%;
+    text-align: center;
+}
+
+nav ul li a {
+    display: inline-block;
+    padding: 20px;
+    width: 100%;
+}
+
+nav ul li a p {
+    margin: 0;
+}
+
+nav ul li a img {
+    width: 2rem;
+}
+
+/*Header*/
+header {
+
+}
+
+header #location-form {
+    display: flex;
+}
+
+#author-form {
+    display: flex;
+}
+
+/*Property Item*/
+.property-item {
+    margin-bottom: 20px;
+}
+
+.property-item .card-link-container {
+    text-align: right;
+}
+
+.property-desc ul {
+    margin-top: 20px;
+    list-style-type: disc;
+    margin-left: 30px;
+}
+
+.property-desc ul li {
+    margin-bottom: 10px;
+}
+
+/*Property Details*/
+.utils-box .container ul {
+    background-color: #93b5e1;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.utils-box .container ul .edit-button,
+.utils-box .container ul .delete-button {
+    width: 48%;
+    margin-bottom: 20px;
+}
+
+.utils-box .container ul .add-note-button {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.utils-box .container ul .all-images-button {
+    width: 100%;
+}
+
+.image-list li {
+    margin-bottom: 20px;
+}
+
+.image-list li img {
+    height: 300px;
+}
+
+.row-details {
+    margin-bottom: 20px;
+}
+
+.row-details p {
+    font-size: 1.2rem;
+}
+
+/*Note Item*/
+.note-item {
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/*Form Control*/
+.form-group {
+	margin-bottom: 10px;
+	padding-bottom: 20px;
+	position: relative;
+}
+
+.form-group label {
+	display: inline-block;
+	margin-bottom: 5px;
+}
+
+.form-group input {
+	border: 2px solid #f0f0f0;
+	border-radius: 4px;
+	display: block;
+	font-family: inherit;
+	font-size: 14px;
+	padding: 10px;
+	width: 100%;
+}
+
+.form-group input:focus {
+	outline: 0;
+	/*border-color: #777;*/
+}
+
+.form-group.success input {
+	border-color: #2ecc71;
+}
+
+.form-group.error input {
+	border-color: #e74c3c;
+}
+
+.form-group i {
+	visibility: hidden;
+	position: absolute;
+	top: 40px;
+	right: 10px;
+}
+
+.form-group.success i.fa-check-circle {
+	color: #2ecc71;
+	visibility: visible;
+}
+
+.form-group.error i.fa-exclamation-circle {
+	color: #e74c3c;
+	visibility: visible;
+}
+
+.form-group small {
+	color: #e74c3c;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	visibility: hidden;
+}
+
+.form-group.error small {
+	visibility: visible;
+}
+
+/*Details Row*/
+#add-property-modal .row-details h4,
+#add-property-modal .row-details p {
+    font-size: 1rem;
+}
+
+/*Calculator*/
+#note-rental ul {
+    list-style-type: disc;
+    padding-left: 30px;
+}
+
+#note-rental ul li {
+    margin-bottom: 10px;
+}

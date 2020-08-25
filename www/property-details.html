@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Mobile App Design</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/c32adfdcda.js" crossorigin="anonymous"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="./index.html">
+                    <h6><img class="img-fluid" src="img/home.png" alt=""></h6>
+                    <p>Home</p>
+                </a>
+            </li>
+            <li>
+                <a href="./add-property.html">
+                    <h6><img class="img-fluid" src="img/pen.png" alt=""></h6>
+                    <p>Create</p>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="menu-open">
+                    <h6><img class="img-fluid" src="img/menu.png" alt=""></h6>
+                    <p>Menu</p>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="menu">
+        <div class="menu-close">
+            X
+        </div>
+        <div class="menu-header">
+            <h2>RentalZ</h2>
+        </div>
+        <div class="menu-content">
+            <ul>
+                <li>
+                    <a href="./detail-search-property.html">
+                        <img src="img/loupe.png" alt="" class="img-fluid">
+                        Detailed Search
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="top">
+        <h1>RentalZ</h1>
+    </div>
+
+    <div class="jumbotron jumbotron-fluid text-center">
+        <div class="container">
+            <h1 class="display-4">Property Details</h1>
+        </div>
+    </div>
+
+    <div class="utils-box">
+        <div class="container">
+            <ul>
+
+                <li class="edit-button">
+                    <a href="./edit-property.html" class="btn btn-block btn-warning">Edit</a>
+                </li>
+
+                <li class="delete-button">
+                    <button class="btn btn-block btn-danger" data-toggle="modal"
+                        data-target="#deleteModal">Delete</button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+                        aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel">Are You Sure?</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Once delete you cannot recover this property.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                    <button type="button" class="btn btn-primary delete-property-button">Yes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="add-note-button">
+                    <a href="./all-notes.html" class="btn btn-block btn-primary">View All Notes</a>
+                </li>
+
+                <li class="all-images-button">
+                    <a href="./all-images.html" class="btn btn-block btn-info">View All Images</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <main id="property-details">
+        <div class="container">
+
+            <div class="row row-details">
+                <div class="col-6 details-title">
+                    <h4>Property Type:</h4>
+                </div>
+                <div class="col-6">
+                    <p class="details-property-type details-content"></p>
+                </div>
+            </div>
+
+            <div class="row row-details">
+                <div class="col-6 details-title">
+                    <h4>Bedrooms:</h4>
+                </div>
+                <div class="col-6">
+                    <p class="details-bedrooms details-content"></p>
+                </div>
+            </div>
+
+            <div class="row row-details">
+                <div class="col-6 details-title">
+                    <h4>Monthly Rent Price:</h4>
+                </div>
+                <div class="col-6">
+                    <p class="details-monthlyRentPrice details-content"></p>
+                </div>
+                <div class="col-12">
+                    <a href="./cost-calculator.html" class="btn btn-primary btn-block">Calculate Cost</a>
+                </div>
+            </div>
+
+            <div class="row row-details">
+                <div class="col-6 details-title">
+                    <h4>Furniture Type:</h4>
+                </div>
+                <div class="col-6">
+                    <p class="details-furnitureType details-content"></p>
+                </div>
+            </div>
+
+            <div class="row row-details">
+                <div class="col-6 details-title">
+                    <h4>City:</h4>
+                </div>
+                <div class="col-6">
+                    <p class="details-city details-content"></p>
+                </div>
+            </div>
+
+            <div class="row row-details">
+                <div class="col-6 details-title">
+                    <h4>Reporter:</h4>
+                </div>
+                <div class="col-6">
+                    <p class="details-reporter details-content"></p>
+                </div>
+            </div>
+
+            <div class="row row-details">
+                <div class="col-6">
+                    <h4>Created Date:</h4>
+                </div>
+                <div class="col-6">
+                    <p class="details-date details-content"></p>
+                </div>
+            </div>
+
+            <div class="row row-details">
+                <div class="col-6">
+                    <h4>Created Time:</h4>
+                </div>
+                <div class="col-6">
+                    <p class="details-time details-content"></p>
+                </div>
+            </div>
+
+            <div class="row row-details">
+                <div class="col-12 details-title">
+                    <h4>Note:</h4>
+                </div>
+                <div class="col-12">
+                    <p class="details-note details-content"></p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="note-container">
+            <div class="container">
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-storage.js"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+    <!-- Optional JavaScript -->
+    <script src="./js/tinh_tp_data.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+
+</html>
