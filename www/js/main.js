@@ -1091,6 +1091,7 @@ const onConfirmAddProperty = async (e) => {
 }
 
 const initialize = () => {
+    localStorage.setItem("sortCriteria", "price asc");
     renderPropertyDetails();
     getCities();
     getBedroomType();
