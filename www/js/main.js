@@ -1113,7 +1113,7 @@ const initialize = () => {
     const sorterSelect = document.querySelector("select#sorter");
     const costCalForm = document.querySelector("#cost-cal-form");
     if (propertyRentalPriceInput) {
-        propertyRentalPriceInput.addEventListener("change", renderInitRentalPayment)
+        propertyRentalPriceInput.addEventListener("keyup", renderInitRentalPayment)
     }
     if (costCalForm) {
         costCalForm.addEventListener("submit", (e) => {
