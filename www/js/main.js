@@ -315,9 +315,9 @@ const calculateTheCost = () => {
 
     result += (result * parseInt(tax)) / 100;
 
-    const rentalCostResultText = moneyFormatter.format(result);
+    const rentalCostResultText = moneyFormatter.format(result + monthlyRentPrice * 2);
 
-    rentalCostResult.innerHTML = rentalCostResultText;
+    rentalCostResult.innerHTML = `${rentalCostResultText}`;
 }
 
 const renderInitRentalPayment = (e) => {
