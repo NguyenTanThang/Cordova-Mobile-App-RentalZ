@@ -44,24 +44,30 @@
         </ul>
     </nav>
     
-      <div class="menu">
-        <div class="menu-close">
-          X
-        </div>
-        <div class="menu-header">
-          <h2>RentalZ</h2>
-        </div>
-        <div class="menu-content">
-          <ul>
-            <li>
-              <a href="./detail-search-property.html">
-                <img src="img/loupe.png" alt="" class="img-fluid">
-                Detailed Search
-              </a>
-            </li>
-          </ul>
-        </div>
+    <div class="menu">
+      <div class="menu-close">
+        X
       </div>
+      <div class="menu-header">
+        <h2>RentalZ</h2>
+      </div>
+      <div class="menu-content">
+        <ul>
+          <li>
+            <a href="./detail-search-property.html">
+              <img src="img/loupe.png" alt="" class="img-fluid">
+              Detailed Search
+            </a>
+          </li>
+          <li>
+            <a href="./cost-calculator.html">
+              <img src="img/calculator.png" alt="" class="img-fluid">
+              Cost Calculator
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
 
       <div class="top">
         <h1>RentalZ</h1>
@@ -77,15 +83,15 @@
       <div class="container">
             <div class="cost-details mb-4" id="init-rental-payment">
                 <h6>Initial Rental Payment</h6>
-                <p></p>
-            </div>
-
-            <div class="cost-details mb-4" id="property-rental-price">
-                <h6>Property Rental Price</h6>
-                <p></p>
+                <p>N/A</p>
             </div>
 
           <form action="#" method="POST" id="cost-cal-form">
+
+              <div class="form-group">
+                <label for="monthRent">Monthly Rent Price:</label>
+                <input type="number" class="form-control" placeholder="Monthly Rent Price" id="property-rental-price" name="monthRent" required onkeypress="return isNumberKey(event)">
+            </div>
 
             <div class="form-group">
                 <label for="monthStay">Months to Stay:</label>
@@ -105,7 +111,6 @@
             <div class="form-group">
                 <button type="submit" class="btn btn-block btn-primary">Calculate</button>
                 <button type="reset" class="btn btn-block btn-info">Reset</button>
-                <a href="./property-details.html" class="btn btn-dark btn-block">Go Back To the Property</a>
             </div>
 
           </form>

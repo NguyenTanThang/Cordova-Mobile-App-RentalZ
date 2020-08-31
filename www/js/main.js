@@ -297,11 +297,7 @@ const calculateTheCost = () => {
     const rentalCostResult = document.querySelector("#rental-cost-result");
     let result = 0;
 
-    const propertyItem = JSON.parse(localStorage.getItem("property"));
-    const {
-        monthlyRentPrice
-    } = propertyItem;
-
+    const monthlyRentPrice = costCalForm.monthRent.value;
     const monthStay = costCalForm.monthStay.value;
     const tax = costCalForm.tax.value;
 
@@ -324,24 +320,17 @@ const calculateTheCost = () => {
     rentalCostResult.innerHTML = rentalCostResultText;
 }
 
-const renderCalculatorPage = () => {
+const renderInitRentalPayment = (e) => {
     const initRentalPayment = document.querySelector("#init-rental-payment p");
-    const propertyRentalPrice = document.querySelector("#property-rental-price p");
+    const monthlyRentPrice = e.target.value;
 
-    if (!initRentalPayment || !propertyRentalPrice) {
+    if (!initRentalPayment) {
         return;
     }
 
-    const propertyItem = JSON.parse(localStorage.getItem("property"));
-    const {
-        monthlyRentPrice
-    } = propertyItem;
-
-    const monthlyRentPriceText = moneyFormatter.format(monthlyRentPrice);
     const initRentalPaymentText = moneyFormatter.format(monthlyRentPrice * 2);
 
     initRentalPayment.innerHTML = initRentalPaymentText;
-    propertyRentalPrice.innerHTML = monthlyRentPriceText;
 }
 
 const renderSearchPropertyList = async (e) => {
@@ -822,6 +811,11 @@ const sortTheProperties = (list) => {
 }
 
 const getPropertiesByCity = async (city) => {
+
+    if (!city) {
+        return;
+    }
+
     const propertyList = document.querySelector(".property-list");
     propertyList.innerHTML = "";
 
@@ -933,6 +927,10 @@ const onSearchCity = (e) => {
     e.preventDefault();
     const selectedCity = document.querySelector("#location-form #city");
     const selectedCitySlug = selectedCity.value;
+
+    if (!selectedCitySlug) {
+        return;
+    }
 
     const designatedCity = document.querySelector(".designted-location");
     designatedCity.innerHTML = getCityNameBySlug(selectedCitySlug);
@@ -1094,7 +1092,6 @@ const onConfirmAddProperty = async (e) => {
 
 const initialize = () => {
     renderPropertyDetails();
-    renderCalculatorPage();
     getCities();
     getBedroomType();
     renderEditPropertyPage();
@@ -1102,6 +1099,7 @@ const initialize = () => {
     renderAllTheImages();
     renderSearchPropertyList();
     uploadImageAbility();
+    const propertyRentalPriceInput = document.querySelector("#property-rental-price");
     const furnitureSelectBox = document.querySelector("select#furnitureType");
     const propertySelectBox = document.querySelector("select#propertyType");
     const locationForm = document.querySelector("#location-form");
@@ -1114,6 +1112,9 @@ const initialize = () => {
     const comfirmationButton = document.querySelector(".comfirmation-button");
     const sorterSelect = document.querySelector("select#sorter");
     const costCalForm = document.querySelector("#cost-cal-form");
+    if (propertyRentalPriceInput) {
+        propertyRentalPriceInput.addEventListener("change", renderInitRentalPayment)
+    }
     if (costCalForm) {
         costCalForm.addEventListener("submit", (e) => {
             e.preventDefault();
