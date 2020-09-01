@@ -1,10 +1,25 @@
+// @param 
+// param1: evt:EventObject
+// @func
+// Only allow number to pass through
+// @return
+// Boolean
 function isNumberKey(evt) {
+    // Get the char code from the event
     var charCode = (evt.which) ? evt.which : evt.keyCode
+    // Check if the char code within the approriate range
     if (charCode > 31 && (charCode < 48 || charCode > 57))
         return false;
     return true;
 }
 
+// @param 
+// param1: slug: String
+// @func
+// Get the name from the slug of the city
+// Example: can_tho == Can Tho
+// @return
+// cityname: String
 const getCityNameBySlug = (slug) => {
     const cities = tinh_tp_data;
     let cityName;
@@ -19,21 +34,23 @@ const getCityNameBySlug = (slug) => {
     return cityName;
 }
 
+// Global Object
 const moneyFormatter = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
 });
-
 const menuClose = document.querySelector(".menu-close");
 const menuOpen = document.querySelector(".menu-open");
 const menu = document.querySelector(".menu");
 const body = document.querySelector("body");
 
+// Create event listener for menu
 menuOpen.addEventListener("click", (e) => {
     menu.classList.add("active");
     body.classList.add("blurred");
 })
 
+// Create event listener for menu
 menuClose.addEventListener("click", (e) => {
     menu.classList.remove("active");
     body.classList.remove("blurred");
@@ -56,6 +73,13 @@ firebase.initializeApp(firebaseConfig);
 // Create DB
 const db = firebase.firestore();
 
+// @param 
+// param1: input: Node
+// param2: message: String
+// @func
+// Set the message as an error for the input
+// @return
+// null
 function setErrorFor(input, message) {
     const formControl = input.parentElement;
     const small = formControl.querySelector('small');
@@ -63,11 +87,23 @@ function setErrorFor(input, message) {
     small.innerText = message;
 }
 
+// @param 
+// param1: input: Node
+// @func
+// Set success for the input
+// @return
+// null
 function setSuccessFor(input) {
     const formControl = input.parentElement;
     formControl.className = 'form-group success';
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// Add the image into the property object in the database
+// @return
+// null
 const addImageFunctionality = async (e) => {
     e.preventDefault();
 
@@ -85,6 +121,7 @@ const addImageFunctionality = async (e) => {
     // Get the download URL
     const imageURL = await storageRef.getDownloadURL()
 
+    // Check to see if the imageList exists
     if (propertyItem.imageList) {
         updatedProperty = {
             imageList: [...propertyItem.imageList, imageURL]
@@ -97,9 +134,17 @@ const addImageFunctionality = async (e) => {
 
     const d = await db.collection("properties").doc(propertyID).update(updatedProperty)
 
+    // Redirect to the property
     window.location.href = "./property-details.html";
 }
 
+// @param 
+// none
+// @func
+// Upload the image from the input:file to the database
+// And get back the link to display for the users to review
+// @return
+// null
 const uploadImageAbility = () => {
     const uploadImageBar = document.getElementById("upload-image-bar");
     const propertyImageFile = document.getElementById("property-image-file");
@@ -131,6 +176,7 @@ const uploadImageAbility = () => {
             },
 
             function complete() {
+                // Get download URL
                 storageRef.getDownloadURL().then(function (url) {
                     uploadedImage.setAttribute("src", url)
                 }).catch(function (error) {
@@ -142,12 +188,18 @@ const uploadImageAbility = () => {
     })
 }
 
+// @param 
+// none
+// @func
+// Get all the input fields in the property to validate
+// @return
+// Boolean
 const checkInputsForAddProperty = () => {
     const form = document.querySelector("#add-property-form");
 
     let isCorrect = true;
 
-    // trim to remove the whitespaces
+    // Get value from all input fields
     const propertyTypeValue = form.propertyType.value.trim();
     const bedroomsValue = form.bedrooms.value.trim();
     const monthlyRentPriceValue = form.monthlyRentPrice.value.trim();
@@ -156,6 +208,7 @@ const checkInputsForAddProperty = () => {
     const noteValue = form.note.value.trim();
     const nameOfTheReporterValue = form.nameOfTheReporter.value.trim();
 
+    // Data validation --start
     if (propertyTypeValue === '') {
         setErrorFor(form.propertyType, 'Property type cannot be blank');
         isCorrect = false;
@@ -190,12 +243,23 @@ const checkInputsForAddProperty = () => {
     } else {
         setSuccessFor(form.nameOfTheReporter);
     }
+    // Data validation --end
 
     return isCorrect;
 }
 
+// @param 
+// param1: list: Array
+// param2: searchObject: Object
+// @func
+// Convert the input list to a searched list 
+// corresponding to the criteria in the searchObject
+// @return
+// returnedList: Array
 const detailedSorter = (list, searchObject) => {
     let returnedList = [];
+
+    //Destructure the searchObject
     const {
         propertyType,
         bedrooms,
@@ -206,6 +270,7 @@ const detailedSorter = (list, searchObject) => {
         nameOfTheReporter
     } = searchObject;
 
+    // Filter procedure --start
     if (propertyType) {
         list = list.filter(doc => {
             const element = doc.data();
@@ -261,7 +326,9 @@ const detailedSorter = (list, searchObject) => {
             return element.nameOfTheReporter.toLowerCase().includes(nameOfTheReporter.toLowerCase());
         })
     }
+    // Filter procedure --end
 
+    // Push each element into the returned list
     list.forEach(doc => {
         const element = doc.data();
         returnedList.push({
@@ -273,10 +340,17 @@ const detailedSorter = (list, searchObject) => {
     return returnedList;
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// Store search criteria in the localStorage
+// @return
+// null
 const onDetailedSearchSubmit = (e) => {
     e.preventDefault();
     const form = document.querySelector("#detailed-search-form");
 
+    // Create searchObject
     const searchObject = {
         propertyType: form.propertyType.value,
         bedrooms: form.bedrooms.value,
@@ -287,16 +361,25 @@ const onDetailedSearchSubmit = (e) => {
         nameOfTheReporter: form.nameOfTheReporter.value
     }
 
+    // Create localStorage
     localStorage.setItem("searchObject", JSON.stringify(searchObject));
 
+    // Redirect
     window.location.href = "./searched-property-list.html"
 }
 
+// @param 
+// none
+// @func
+// Calculate the total cost accroding to the inputs
+// @return
+// null
 const calculateTheCost = () => {
     const costCalForm = document.querySelector("#cost-cal-form");
     const rentalCostResult = document.querySelector("#rental-cost-result");
     let result = 0;
 
+    // Get value from the calculator form
     const monthlyRentPrice = costCalForm.monthRent.value;
     const monthStay = costCalForm.monthStay.value;
     const tax = costCalForm.tax.value;
@@ -304,9 +387,13 @@ const calculateTheCost = () => {
     let monthCounter = 0;
     let monthlyRentalPayment = monthlyRentPrice;
 
+    // Create an iteraton for it to automatically 
+    // Add the monthly rent to the result
     for (let index = 0; index < monthStay; index++) {
         monthCounter++;
+        // Everytime the monthCounter hit 12 
         if (monthCounter > 12) {
+            // monthlyRentalPayment will be added 5%
             monthlyRentalPayment = parseInt(monthlyRentPrice) + parseInt(monthlyRentalPayment) * 5 / 100;
             monthCounter = 0;
         }
@@ -317,9 +404,16 @@ const calculateTheCost = () => {
 
     const rentalCostResultText = moneyFormatter.format(result + monthlyRentPrice * 2);
 
+    // Print out the result
     rentalCostResult.innerHTML = `${rentalCostResultText}`;
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// Print out the initial payment
+// @return
+// null
 const renderInitRentalPayment = (e) => {
     const initRentalPayment = document.querySelector("#init-rental-payment p");
     const monthlyRentPrice = e.target.value;
@@ -333,6 +427,12 @@ const renderInitRentalPayment = (e) => {
     initRentalPayment.innerHTML = initRentalPaymentText;
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// Render the searched properties list onto the screen
+// @return
+// null
 const renderSearchPropertyList = async (e) => {
     try {
         const searchObject = JSON.parse(localStorage.getItem("searchObject"));
@@ -342,20 +442,25 @@ const renderSearchPropertyList = async (e) => {
             return;
         }
 
+        // Get all properties
         const propertyList = document.querySelector(".property-list");
         propertyList.innerHTML = "";
         let propertiesData = await db.collection("properties").get()
         let currentProperties = [];
 
+        // Get the filtered properties
         currentProperties = detailedSorter(propertiesData.docs, searchObject);
 
+        // If no property match the search criteria
         if (currentProperties.length === 0) {
+            // Print this message
             propertyList.innerHTML = `
                 <p>Currently there is no property that matches the search criteria</p>
                 <a href="./detail-search-property.html" class="btn btn-primary">Search Again</a>
             `
         }
 
+        // Otherwise, print all the properties
         currentProperties = sortTheProperties(currentProperties);
         currentProperties.forEach((propertyItem, index) => {
             renderProperty(propertyItem, index + 1)
@@ -366,6 +471,12 @@ const renderSearchPropertyList = async (e) => {
     }
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// Find the note based on the author's name and render them out
+// @return
+// null
 const onSearchNoteAuthor = async (e) => {
     try {
         e.preventDefault();
@@ -381,6 +492,7 @@ const onSearchNoteAuthor = async (e) => {
         const notesData = await db.collection("notes").where("propertyID", "==", propertyID).get()
         let currentNotesList = notesData.docs;
 
+        // Get the author's name
         const authorName = authorForm.author.value;
 
         if (authorName != "") {
@@ -390,7 +502,10 @@ const onSearchNoteAuthor = async (e) => {
             })
         }
 
+        // If there is no note
         if (currentNotesList.length === 0) {
+            
+            // Print out the message
             noteList.innerHTML = `
                 <p>Currently there is no note for this property of ${authorName}</p>
                 <a href="./add-note.html" class="btn btn-primary">Create Note</a>
@@ -398,6 +513,7 @@ const onSearchNoteAuthor = async (e) => {
             return;
         }
 
+        // Otherwise, render all the notes
         currentNotesList.forEach((doc, index) => {
             renderNote({
                 ...doc.data(),
@@ -409,34 +525,58 @@ const onSearchNoteAuthor = async (e) => {
     }
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// Get the note data and put in the database
+// @return
+// null
 const onAddNote = (e) => {
     e.preventDefault();
     const form = document.querySelector("#add-note-form");
     const propertyID = localStorage.getItem("propertyID")
 
+    // Create a new note object
     const newNote = {
         note: form.note.value,
         author: form.author.value,
         propertyID
     }
 
+    // Put the note object into the database
     db.collection("notes").add(newNote)
 
     form.note.value = "";
     form.author.value = "";
 }
 
+// @param 
+// param1: imageURL: String
+// param2: index: Int
+// @func
+// Render an image based on the imageURL
+// @return
+// null
 const renderImage = (imageURL, index) => {
     const imageList = document.querySelector(".image-list");
+
+    // Create new image item
     const imageItem = `
         <li class="image-item card">
             <img src="${imageURL}" alt="Image ${index}"/>
         </li>
     `;
 
+    // Push in the image list
     imageList.innerHTML += imageItem;
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// Render all the images to the all images page
+// @return
+// null
 const renderAllTheImages = async (e) => {
     try {
         const imageList = document.querySelector(".image-list");
@@ -449,7 +589,9 @@ const renderAllTheImages = async (e) => {
         const propertyID = localStorage.getItem("propertyID");
         const property = JSON.parse(localStorage.getItem("property"));
 
+        // If the image list is empty
         if (!property.imageList || property.imageList.length === 0) {
+            // Print out the message
             imageList.innerHTML = `
                 <p>Currently there is no image for this property</p>
                 <a href="./add-image.html" class="btn btn-primary">Create Image</a>
@@ -457,6 +599,7 @@ const renderAllTheImages = async (e) => {
             return;
         }
 
+        // Otherwise, render them out
         property.imageList.forEach((imageURL, index) => {
             renderImage(imageURL, index + 1)
         })
@@ -465,6 +608,13 @@ const renderAllTheImages = async (e) => {
     }
 }
 
+// @param 
+// param1: noteItemDoc: Doc
+// param2: index: Int
+// @func
+// Render the note
+// @return
+// null
 const renderNote = (noteItemDoc, index) => {
     const {
         id,
@@ -472,6 +622,8 @@ const renderNote = (noteItemDoc, index) => {
         author
     } = noteItemDoc;
     const noteList = document.querySelector(".note-list");
+
+    // Create note item
     const noteItem = `
         <li class="note-item card">
             <h4>Note ${index}</h4>
@@ -480,9 +632,16 @@ const renderNote = (noteItemDoc, index) => {
         </li>
     `;
 
+    // Push note item to note list
     noteList.innerHTML += noteItem;
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// Render all the notes to the all notes page
+// @return
+// null
 const renderAllTheNotes = async (e) => {
     try {
         const noteList = document.querySelector(".note-list");
@@ -495,7 +654,9 @@ const renderAllTheNotes = async (e) => {
         const propertyID = localStorage.getItem("propertyID");
         const notesData = await db.collection("notes").where("propertyID", "==", propertyID).get()
 
+         // If the note list is empty
         if (notesData.docs.length === 0) {
+            // Print out the message
             noteList.innerHTML = `
                 <p>Currently there is no note for this property</p>
                 <a href="./add-note.html" class="btn btn-primary">Create Note</a>
@@ -503,6 +664,7 @@ const renderAllTheNotes = async (e) => {
             return;
         }
 
+        // Otherwise, render them out
         notesData.docs.forEach((doc, index) => {
             renderNote({
                 ...doc.data(),
@@ -514,6 +676,13 @@ const renderAllTheNotes = async (e) => {
     }
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// Render the edit property page
+// Based on the selected property data
+// @return
+// null
 const renderEditPropertyPage = (e) => {
     const property = JSON.parse(localStorage.getItem("property"));
 
@@ -619,6 +788,13 @@ const renderEditPropertyPage = (e) => {
     editNoteTextarea.value = note;
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// This trigger when the user update a property
+// The new data will replace the old data
+// @return
+// null
 const onUpdateProperty = async (e) => {
     try {
         e.preventDefault();
@@ -643,6 +819,13 @@ const onUpdateProperty = async (e) => {
     }
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// This trigger when the user delete a property
+// A property will be remove completely
+// @return
+// null
 const onDeleteProperty = async (e) => {
     e.stopPropagation();
     const dataID = localStorage.getItem("propertyID");
@@ -652,6 +835,13 @@ const onDeleteProperty = async (e) => {
     window.location.href = "./index.html";
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// Perform preparation procudure before 
+// going to the property details page
+// @return
+// null
 const onGoToPropertyDetails = async (e) => {
     try {
         const dataID = e.target.getAttribute("data-id");
@@ -665,6 +855,13 @@ const onGoToPropertyDetails = async (e) => {
     }
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// Get the data from the preparation phase
+// and render them onto the screen
+// @return
+// null
 const renderPropertyDetails = async (e) => {
     const propertyDetailsTag = document.querySelector("#property-details");
 
@@ -719,6 +916,14 @@ const renderPropertyDetails = async (e) => {
     }
 }
 
+// @param 
+// none
+// @func
+// Set an event listener for all view more button
+// in the property so that it can redirect to
+// the property details page
+// @return
+// null
 const enableViewMorePropertyButton = () => {
     const viewMoreButtons = Array.from(document.querySelectorAll(".view-more-btn"));
 
@@ -727,6 +932,14 @@ const enableViewMorePropertyButton = () => {
     })
 }
 
+// @param 
+// param1: propertyItemDoc: Doc
+// param2: index: Int
+// @func
+// Render a property item based on the data from
+// propertyItemDoc
+// @return
+// null
 const renderProperty = (propertyItemDoc, index) => {
     const {
         id,
@@ -768,6 +981,12 @@ const renderProperty = (propertyItemDoc, index) => {
     propertyList.innerHTML += propertyItem;
 }
 
+// @param 
+// none
+// @func
+// Asynchronously fetch all the properties in the database
+// @return
+// null
 const getProperties = async () => {
     try {
         const propertyList = document.querySelector(".property-list");
@@ -784,12 +1003,24 @@ const getProperties = async () => {
     }
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// Modify the sortCriteria in localStorage
+// @return
+// null
 const changeSortCriteria = (e) => {
     e.preventDefault();
 
     localStorage.setItem("sortCriteria", e.target.value);
 }
 
+// @param 
+// param1: list: Array
+// @func
+// Sort the list based on the sortCriteria in localStorage
+// @return
+// returnedList: Array
 const sortTheProperties = (list) => {
     const sortCriteria = localStorage.getItem("sortCriteria");
     let returnedList = list;
@@ -810,6 +1041,13 @@ const sortTheProperties = (list) => {
     return returnedList;
 }
 
+// @param 
+// param1: city: String
+// @func
+// Get all of the properties corresponding to the selected city
+// And render them to the screen
+// @return
+// null
 const getPropertiesByCity = async (city) => {
 
     if (!city) {
@@ -854,6 +1092,13 @@ const getPropertiesByCity = async (city) => {
     }
 }
 
+// @param 
+// none
+// @func
+// Get all of the funiture types and render them as options
+// in the select box
+// @return
+// null
 const getFurnitureType = () => {
     const furnitureSelectBox = document.querySelector("select#furnitureType");
 
@@ -869,6 +1114,13 @@ const getFurnitureType = () => {
     }
 }
 
+// @param 
+// none
+// @func
+// Get all of the property types and render them as options
+// in the select box
+// @return
+// null
 const getPropertyType = () => {
     const propertySelectBox = document.querySelector("select#propertyType");
 
@@ -884,6 +1136,13 @@ const getPropertyType = () => {
     }
 }
 
+// @param 
+// none
+// @func
+// Get all of the bedroom types and render them as options
+// in the select box
+// @return
+// null
 const getBedroomType = () => {
     const bedroomSelectBox = document.querySelector("select#bedrooms");
 
@@ -903,6 +1162,13 @@ const getBedroomType = () => {
     }
 }
 
+// @param 
+// none
+// @func
+// Get all of the cities and render them as options
+// in the select box
+// @return
+// null
 const getCities = () => {
     const citySelectBox = document.querySelector("select#city");
     const cities = tinh_tp_data;
@@ -923,6 +1189,14 @@ const getCities = () => {
     }
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// Trigger when the users search for properties on city
+// Get the data from the select box and push them to
+// the getPropertiesByCity function
+// @return
+// null
 const onSearchCity = (e) => {
     e.preventDefault();
     const selectedCity = document.querySelector("#location-form #city");
@@ -938,6 +1212,14 @@ const onSearchCity = (e) => {
     getPropertiesByCity(selectedCitySlug);
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// Trigger when the users create a new property 
+// Perform data validation and put preview data in 
+// a modal
+// @return
+// null
 const onCreateProperty = (e) => {
     e.preventDefault();
 
@@ -1082,6 +1364,13 @@ const onCreateProperty = (e) => {
     $('#add-property-modal').modal('show')
 }
 
+// @param 
+// param1: e: EventObject
+// @func
+// Trigger when the users confirm to create a new property 
+// Put the new property into the database
+// @return
+// null
 const onConfirmAddProperty = async (e) => {
     const newProperty = JSON.parse(localStorage.getItem("newProperty"));
 
@@ -1090,16 +1379,16 @@ const onConfirmAddProperty = async (e) => {
     window.location.href = "./index.html";
 }
 
+// @param 
+// none
+// @func
+// Execute when the program start to 
+// check for requirements and initiate core functions
+// @return
+// null
 const initialize = () => {
     localStorage.setItem("sortCriteria", "price asc");
-    renderPropertyDetails();
-    getCities();
-    getBedroomType();
-    renderEditPropertyPage();
-    renderAllTheNotes();
-    renderAllTheImages();
-    renderSearchPropertyList();
-    uploadImageAbility();
+
     const propertyRentalPriceInput = document.querySelector("#property-rental-price");
     const furnitureSelectBox = document.querySelector("select#furnitureType");
     const propertySelectBox = document.querySelector("select#propertyType");
@@ -1113,6 +1402,16 @@ const initialize = () => {
     const comfirmationButton = document.querySelector(".comfirmation-button");
     const sorterSelect = document.querySelector("select#sorter");
     const costCalForm = document.querySelector("#cost-cal-form");
+
+    renderPropertyDetails();
+    getCities();
+    getBedroomType();
+    renderEditPropertyPage();
+    renderAllTheNotes();
+    renderAllTheImages();
+    renderSearchPropertyList();
+    uploadImageAbility();
+    
     if (propertyRentalPriceInput) {
         propertyRentalPriceInput.addEventListener("keyup", renderInitRentalPayment)
     }
@@ -1168,4 +1467,5 @@ const initialize = () => {
     }
 }
 
+// Run program
 initialize();
